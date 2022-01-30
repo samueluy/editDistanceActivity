@@ -1,4 +1,5 @@
 import array
+import copy
 
 """
 * @brief Finds the edit distance given two strings
@@ -10,19 +11,29 @@ import array
 * @return Total weight of moves
 """
 
-import copy
-
 
 def findEditDistance(str1, str2, i, j):
     print("Input string 1 = " + str1)
     print("Input string 2 = " + str2)
+
+    """
     initialized_matrix = [[0] * (j + 1) for x in range(i + 1)]
     initialized_matrix_copy = copy.deepcopy(initialized_matrix)  # Deep copy of initialized matrix
     bottom_set_matrix = setBottomBaseValues(initialized_matrix_copy, i, j, 0)  # Matrix with bottom values
     bottom_set_matrix_copy = copy.deepcopy(bottom_set_matrix)  # Deep copy of matrix with bottom values
     matrix = setSideBaseValues(bottom_set_matrix_copy, i, j, 0)  # Matrix with base values
+    print(initialized_matrix)
+    """
 
-    print("base", i)
+    typedef_matrix = []
+    row_matrix = createListRow(typedef_matrix, 0, len(str1) + 1)
+    initialized_matrix = createListCol(row_matrix, 0, len(str1) + 1, len(str2) + 1)
+    print(initialized_matrix)
+    initialized_matrix_copy = copy.deepcopy(initialized_matrix)
+    bottom_set_matrix = setBottomBaseValues(initialized_matrix_copy, i, j, 0)
+    bottom_set_matrix_copy = copy.deepcopy(bottom_set_matrix)
+    matrix = setBottomBaseValues(bottom_set_matrix_copy, i, j, 0)
+
     recur_i(0, j, i + 1, j + 1, matrix, str1, str2)
 
     # print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in matrix]))
@@ -32,6 +43,27 @@ def findEditDistance(str1, str2, i, j):
     matrixBacktrack(matrix, str1, str2, len(str1), len(str2), results)
     results.reverse()  # Reverse the results list
     printList(results, len(results) - 1, 0)
+
+
+def createListRow(matrix, n, length):
+    if n < length:
+        matrix.append([])
+        createListRow(matrix, n + 1, length)
+        return matrix
+
+
+def zeroListRow(matrix, n, length):
+    if n < length:
+        matrix.append(0)
+        zeroListRow(matrix, n + 1, length)
+        return matrix
+
+
+def createListCol(matrix, n, length, rowLength):
+    if n < length:
+        zeroListRow(matrix[n], 0, rowLength)
+        createListCol(matrix, n + 1, length, rowLength)
+        return matrix
 
 
 def setBottomBaseValues(matrix, len1, len2, i):
@@ -129,8 +161,8 @@ def recur_j(i, j, size, matrix, str1, str2):
 # Driver
 # string1 = input("Input string 1 = ")
 # string2 = input("Input string 2 = ")
-string1 = "food"
-string2 = "money"
+string1 = "intentionnn"
+string2 = "execution"
 findEditDistance(string1, string2, len(string1), len(string2))
 
 """
