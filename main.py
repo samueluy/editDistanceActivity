@@ -14,6 +14,8 @@ import copy
 
 
 def findEditDistance(str1, str2, i, j):
+    print("Input string 1 = " + str1)
+    print("Input string 2 = " + str2)
     initialized_matrix = [[0] * (j + 1) for x in range(i + 1)]
     initialized_matrix_copy = copy.deepcopy(initialized_matrix)  # Deep copy of initialized matrix
     bottom_set_matrix = setBottomBaseValues(initialized_matrix_copy, i, j, 0)  # Matrix with bottom values
@@ -46,9 +48,13 @@ def findEditDistance(str1, str2, i, j):
                                        matrix[i - 1][j],  # Remove
                                        matrix[i - 1][j - 1])  # Replace
 
-    print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in matrix]))
-    matrixBacktrack(matrix, str2, str2, len(str1), len(str2))
-    return matrix[i][j]
+    # print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in matrix]))
+    print("Edit Distance:", matrix[i][j])
+    print("Operations:")
+    results = []  # Initialize list for results
+    matrixBacktrack(matrix, str1, str2, len(str1), len(str2), results)
+    results.reverse()  # Reverse the results list
+    printList(results, len(results) - 1, 0)
 
 
 def setBottomBaseValues(matrix, len1, len2, i):
@@ -71,7 +77,7 @@ def setSideBaseValues(matrix, len1, len2, i):
     return matrix
 
 
-def matrixBacktrack(matrix, str1, str2, i, j):
+def matrixBacktrack(matrix, str1, str2, i, j, results):
     if i == 0 and j == 0:
         return matrix[0][0]
     elif i == 0:
@@ -84,23 +90,37 @@ def matrixBacktrack(matrix, str1, str2, i, j):
     replace = matrix[i - 1][j - 1]
     minimum = min(insert, remove, replace)
 
-    if minimum == replace and matrix[i][j] == matrix[i-1][j-1]:  # same values, copy
-        return matrixBacktrack(matrix, str1, str2, i - 1, j - 1)
+    if minimum == replace and matrix[i][j] == matrix[i - 1][j - 1]:  # same values, copy
+        return matrixBacktrack(matrix, str1, str2, i - 1, j - 1, results)
     elif minimum == replace:
-        print("Replace")
-        return matrixBacktrack(matrix, str1, str2, i - 1, j - 1)
+        results.append("Replace " + str1[i-1] + " with " + str2[j-1])
+        return matrixBacktrack(matrix, str1, str2, i - 1, j - 1, results)
+
     elif minimum == insert:
-        print("Insert")
-        return matrixBacktrack(matrix, str1, str2, i, j - 1)
+        results.append("Insert " + str2[j-1])
+        return matrixBacktrack(matrix, str1, str2, i, j - 1, results)
+
     elif minimum == remove:
-        print("Remove")
-        return matrixBacktrack(matrix, str2, str2, i - 1, j)
+        results.append("Remove " + str1[j-1])
+        return matrixBacktrack(matrix, str2, str2, i - 1, j, results)
+
+
+def printList(results, size, i):
+    if i == size:
+        print(results[i])
+        return 0
+
+    print(results[i])
+    printList(results, size, i + 1)
+    return 0
 
 
 # Driver
-string1 = "sunday"
-string2 = "saturday"
-print(findEditDistance(string1, string2, len(string1), len(string2)))
+#string1 = input("Input string 1 = ")
+#string2 = input("Input string 2 = ")
+string1 = "intentionnn"
+string2 = "execution"
+findEditDistance(string1, string2, len(string1), len(string2))
 
 """
 References:
