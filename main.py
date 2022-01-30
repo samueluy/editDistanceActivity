@@ -22,33 +22,10 @@ def findEditDistance(str1, str2, i, j):
     bottom_set_matrix_copy = copy.deepcopy(bottom_set_matrix)  # Deep copy of matrix with bottom values
     matrix = setSideBaseValues(bottom_set_matrix_copy, i, j, 0)  # Matrix with base values
 
-    # Fill d[][] in bottom up manner
-    for i in range(i + 1):
-        for j in range(j + 1):
+    print("base", i)
+    recur_i(0, j, i + 1, matrix, str1, str2)
 
-            # If first string is empty, only option is to
-            # insert all characters of second string
-            if i == 0:
-                matrix[i][j] = j  # Min. operations = j
-
-            # If second string is empty, only option is to
-            # remove all characters of second string
-            elif j == 0:
-                matrix[i][j] = i  # Min. operations = i
-
-            # If last characters are same, ignore last char
-            # and recur for remaining string
-            elif str1[i - 1] == str2[j - 1]:
-                matrix[i][j] = matrix[i - 1][j - 1]
-
-            # If last character are different, consider all
-            # possibilities and find minimum
-            else:
-                matrix[i][j] = 1 + min(matrix[i][j - 1],  # Insert
-                                       matrix[i - 1][j],  # Remove
-                                       matrix[i - 1][j - 1])  # Replace
-
-    # print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in matrix]))
+    #print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in matrix]))
     print("Edit Distance:", matrix[i][j])
     print("Operations:")
     results = []  # Initialize list for results
@@ -93,15 +70,15 @@ def matrixBacktrack(matrix, str1, str2, i, j, results):
     if minimum == replace and matrix[i][j] == matrix[i - 1][j - 1]:  # same values, copy
         return matrixBacktrack(matrix, str1, str2, i - 1, j - 1, results)
     elif minimum == replace:
-        results.append("Replace " + str1[i-1] + " with " + str2[j-1])
+        results.append("Replace " + str1[i - 1] + " with " + str2[j - 1])
         return matrixBacktrack(matrix, str1, str2, i - 1, j - 1, results)
 
     elif minimum == insert:
-        results.append("Insert " + str2[j-1])
+        results.append("Insert " + str2[j - 1])
         return matrixBacktrack(matrix, str1, str2, i, j - 1, results)
 
     elif minimum == remove:
-        results.append("Remove " + str1[j-1])
+        results.append("Remove " + str1[j - 1])
         return matrixBacktrack(matrix, str2, str2, i - 1, j, results)
 
 
@@ -115,11 +92,40 @@ def printList(results, size, i):
     return 0
 
 
+def recur_i(i, j, size, matrix, str1, str2):
+    if i < size:
+        for j in range(j + 1):
+            # If first string is empty, only option is to
+            # insert all characters of second string
+            if i == 0:
+                matrix[i][j] = j  # Min. operations = j
+
+            # If second string is empty, only option is to
+            # remove all characters of second string
+            elif j == 0:
+                matrix[i][j] = i  # Min. operations = i
+
+            # If last characters are same, ignore last char
+            # and recur for remaining string
+            elif str1[i - 1] == str2[j - 1]:
+                matrix[i][j] = matrix[i - 1][j - 1]
+
+            # If last character are different, consider all
+            # possibilities and find minimum
+            else:
+                matrix[i][j] = 1 + min(matrix[i][j - 1],  # Insert
+                                       matrix[i - 1][j],  # Remove
+                                       matrix[i - 1][j - 1])  # Replace
+
+        new_matrix = recur_i(i + 1, j, size, matrix, str1, str2)
+        return new_matrix
+
+
 # Driver
-#string1 = input("Input string 1 = ")
-#string2 = input("Input string 2 = ")
-string1 = "intentionnn"
-string2 = "execution"
+# string1 = input("Input string 1 = ")
+# string2 = input("Input string 2 = ")
+string1 = "food"
+string2 = "money"
 findEditDistance(string1, string2, len(string1), len(string2))
 
 """
