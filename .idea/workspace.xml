@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="aeadd38c-3787-49e9-a5b4-57f10f2e3938" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UY_SAMUEL_PYTHON.py" beforeDir="false" afterPath="$PROJECT_DIR$/UY_SAMUEL_PYTHON.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,5 +84,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

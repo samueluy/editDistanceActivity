@@ -33,7 +33,8 @@ def findEditDistance(str1, str2, i, j):
     initialized_matrix_copy = copy.deepcopy(initialized_matrix)
     bottom_set_matrix = setBaseValues(initialized_matrix_copy, i, j, 0)  # Set the bottom values of the list
     bottom_set_matrix_copy = copy.deepcopy(bottom_set_matrix)
-    matrix = setBaseValues(bottom_set_matrix_copy, i, j, 0)  # Set the side values of the list
+    matrix = setSideBaseValues(bottom_set_matrix_copy, i, j, 0)  # Set the side values of the list
+    print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in matrix]))
 
     recur_i(0, j, i + 1, j + 1, matrix, str1, str2)  # Run the recursive code to create the matrix
 
@@ -140,6 +141,33 @@ def setBaseValues(matrix, len1, len2, i):
 
     matrix[len1][i] = len2 - i
     matrix = setBaseValues(matrix, len1, len2, i + 1)
+    return matrix
+
+
+def setSideBaseValues(matrix, len1, len2, i):
+    """ Adds zeroes inside a given list
+    Parameters
+    ----------
+    matrix : list
+        List that will be modified
+    len1 : int
+        Length of first string
+    len2 : int
+        Length of second string
+    i : int
+        Current iteration
+
+    Return
+    ------
+    matrix : list
+        modified matrix
+    """
+    if i == len1:
+        matrix[i][len2] = len1 - i
+        return matrix
+
+    matrix[i][len2] = len1 - i
+    matrix = setSideBaseValues(matrix, len1, len2, i + 1)
     return matrix
 
 
@@ -293,10 +321,10 @@ def recur_j(i, j, size, matrix, str1, str2):
 
 
 # Driver
-string1 = input("Input string 1 = ")
-string2 = input("Input string 2 = ")
-# string1 = "intention"
-# string2 = "execution"
+# string1 = input("Input string 1 = ")
+# string2 = input("Input string 2 = ")
+string1 = "intention"
+string2 = "execution"
 findEditDistance(string1, string2, len(string1), len(string2))
 
 """
