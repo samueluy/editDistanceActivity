@@ -34,7 +34,6 @@ def findEditDistance(str1, str2, i, j):
     bottom_set_matrix = setBaseValues(initialized_matrix_copy, i, j, 0)  # Set the bottom values of the list
     bottom_set_matrix_copy = copy.deepcopy(bottom_set_matrix)
     matrix = setSideBaseValues(bottom_set_matrix_copy, i, j, 0)  # Set the side values of the list
-    print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in matrix]))
 
     recur_i(0, j, i + 1, j + 1, matrix, str1, str2)  # Run the recursive code to create the matrix
 
